@@ -106,6 +106,7 @@ const index = () => {
   return (
     <>
     <Head>
+      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
       <title>{"VocBuild"}</title>
     </Head>
 
