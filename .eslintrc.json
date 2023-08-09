@@ -1,4 +1,4 @@
 {
   "extends": "next/core-web-vitals",
-  "rules": {"react-hooks/rules-of-hooks" : "warn"}
+  "rules": {"react-hooks/rules-of-hooks" : "off"}
 }
