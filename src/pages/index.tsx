@@ -18,16 +18,18 @@ const index = () => {
 
   const setVideo = () => {
     if(count < total && count >= 0)
-      setVideoSource(`http://api.vocbuild.com/movie/clip/${search}/${count}`);
+      setVideoSource(`${process.env.NEXT_PUBLIC_VIDEO_API}${search}/${count}`);
   }
   
   const searchBox = async() => {
     console.log("inside search");
     setWord(search);
+
+    
     
     const options = {
       method: 'GET',
-      url: `http://api.vocbuild.com/word/definition?word=${search}`
+      url: `${process.env.NEXT_PUBLIC_MEANING_API}${search}`
     };
 
     try {
@@ -37,7 +39,7 @@ const index = () => {
       setMeanings(response.data.definition);
 
       //Searching no of videos
-      await axios.get(`http://api.vocbuild.com/word/total/${search}`).then((response)=> {
+      await axios.get(`${process.env.NEXT_PUBLIC_TOTAL_API}${search}`).then((response)=> {
         total = response.data;
         setVideo();
       });
@@ -76,7 +78,6 @@ const index = () => {
   const handlePlay = () => {
     if(videoSource.length !==0) {
       setPlay(!play);
-      //videoRef.current.play();
     }
   }
 
@@ -165,29 +166,3 @@ const index = () => {
 }
 
 export default index
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-{/* <video controls width="560" height="315">
-          <source src={src} type="video/mp4" />    
-        </video> */}
-{/* <iframe width="560" height="315" src={src} frameBorder="0" allowFullScreen/> */}
