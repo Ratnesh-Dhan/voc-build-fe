@@ -9,7 +9,7 @@ let count = 0;
 let total = 0;
 
 const index = () => {
-  const videoRef = useRef();
+  const videoRef = useRef(null);
   const [search, setSearch] = useState("");
   const [meanings, setMeanings] = useState([]);
   const [videoSource, setVideoSource] = useState("");
@@ -82,7 +82,7 @@ const index = () => {
   }
 
   useEffect(()=>{
-    videoRef.current?.load();
+    videoRef?.current?.load();
     console.log(videoSource);
     console.log({count});
     console.log({total});
@@ -99,7 +99,7 @@ const index = () => {
     if(play)
       videoRef.current?.play();
     else
-      videoRef.current?.pause();
+      videoRef?.current?.pause();
     console.log({play});
   },[play]);
 
