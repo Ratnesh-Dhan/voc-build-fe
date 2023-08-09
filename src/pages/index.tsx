@@ -81,11 +81,6 @@ const index = () => {
     }
   }
 
-  const handlePouse = () => {
-    if(videoSource.length !==0)
-      videoRef.current.pause();
-  }
-
   useEffect(()=>{
     videoRef.current?.load();
     console.log(videoSource);
@@ -114,7 +109,7 @@ const index = () => {
       <title>{"VocBuild"}</title>
     </Head>
 
-    <div className="overflow-hidden max-h-screen">
+    <div className="overflow-hidden max-h-full">
       <div id="navbar" className="bg-black py-4 px-10 flex items-center w-screen">
       <Image src="suvid.svg" width={51.7} height={57.7} alt="logo"/>
       <h1 className="text-white text-4xl font-bold ml-3">{"VocBuild"}</h1>
