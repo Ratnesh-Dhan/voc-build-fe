@@ -146,10 +146,10 @@ const Home = () => {
 
         {/* VIDEO AREA */}
         {/* <div className="mt-8 w-[640px] h-[360px] border border-red-500 mb-6 flex bg-black"> */}
-        {videoSource && <div className="mt-8 md:w-[640px] w-9/10 aspect-video border border-red-500 mb-6 flex bg-black">
-         <video loop width="100%" autoPlay ref={videoRef}>
+        {word && <div className="mt-8 md:w-[640px] w-9/10 aspect-video border border-red-500 mb-6 flex items-center justify-center bg-black">
+         {total===0 ? <p className="text-white font-semibold text-center">Sorry! No videos found.</p>:<video loop width="100%" autoPlay ref={videoRef}>
           <source src={videoSource} />  
-        </video>
+        </video>}
         </div>}
 
         {/* VIDEO CONTROLS */}
