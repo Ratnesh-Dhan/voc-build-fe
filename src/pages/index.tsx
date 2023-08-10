@@ -130,13 +130,13 @@ const Home = () => {
           <h1 className="text-white text-2xl font-bold md:ml-3 ml-1">{"VocBuild"}</h1>
       </div>
       </div>
-      <main className="flex flex-col md:flex-row md:px-[100px] py-[90px] md:m-auto md:max-w-[1280px] px-4 min-h-screen overflow-hidden">
+      <main className="flex flex-col md:flex-row md:px-[100px] py-[80px] md:m-auto md:max-w-[1280px] px-4 min-h-screen overflow-hidden">
 
       {/* <div id="left-screen" className="px-[60px] h-full max-h-screen overflow-hidden flex flex-col flex-grow"> */}
       <div id="left-screen" className="md:px-[60px] flex flex-col items-center h-full max-h-screen min-w-3/5 md:w-3/5">
 
         {/* SEARCH BOX */}
-        <div className="text-slate-800 mt-8 flex border border-slate-300 rounded-full pl-4 md:w-1/2 w-full items-center ">
+        <div className="text-slate-800 mt-8 flex border border-slate-300 rounded-full pl-4 md:w-2/3 w-full items-center py-3">
           <input type="text" placeholder="search" value={search} onChange={(event)=>{setSearch(event.target.value)}} className="flex-1 outline-none" onKeyPress={handleKeyEnter}/>
 
           <div className="flex items-center px-4 border-l border-l-slate-300 cursor-pointer h-[100%]" onClick={searchBox}>
