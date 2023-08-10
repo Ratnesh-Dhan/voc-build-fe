@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Head from 'next/head';
 import Image from 'next/image';
 import { TriangleLeftFill, Search, TriangleRightFill } from 'akar-icons';
@@ -11,6 +11,7 @@ let total = 0;
 
 const Home = () => {
   const videoRef = useRef(null);
+  const inputRef = useRef(null);
   const [search, setSearch] = useState("");
   const [meanings, setMeanings] = useState([]);
   const [videoSource, setVideoSource] = useState("");
@@ -90,6 +91,28 @@ const Home = () => {
     }
   };
 
+  // // handle what happens on key press
+  // const handleKeyPress = useCallback((event) => {
+  //   console.log(`Key pressed: ${event.key}`);
+  //   if(event.key === '/') {
+  //     inputRef.current.focus();
+  //   }
+  // }, []);
+
+  // useEffect(() => {
+  //   // attach the event listener
+  //   document.addEventListener('keydown', handleKeyPress);
+
+  //   // remove the event listener
+  //   return () => {
+  //     document.removeEventListener('keydown', handleKeyPress);
+  //   };
+  // }, [handleKeyPress]);
+
+  useEffect(()=>{
+    inputRef.current.focus();
+  },[])
+
   useEffect(()=>{
     videoRef?.current?.load();
     console.log(videoSource);
@@ -125,19 +148,19 @@ const Home = () => {
 
     <div className="overflow-hidden min-h-screen">
       <div id="navbar" className="bg-black py-4 md:px-10 px-4 flex items-center w-screen fixed">
-      <div className="flex items-center md:max-w-[1280px] md:w-full md:m-auto">
+      <div className="flex items-center md:max-w-[1400px] md:w-full md:m-auto">
           <Image src="suvid.svg" width={40} height={45} alt="logo"/>
           <h1 className="text-white text-2xl font-bold md:ml-3 ml-1">{"VocBuild"}</h1>
       </div>
       </div>
-      <main className="flex flex-col md:flex-row md:px-[100px] py-[80px] md:m-auto md:max-w-[1280px] px-4 min-h-screen overflow-hidden">
+      <main className="flex flex-col md:flex-row md:px-[100px] py-[80px] md:m-auto md:max-w-[1400px] px-4 min-h-screen overflow-hidden">
 
       {/* <div id="left-screen" className="px-[60px] h-full max-h-screen overflow-hidden flex flex-col flex-grow"> */}
       <div id="left-screen" className="md:px-[60px] flex flex-col items-center h-full max-h-screen min-w-3/5 md:w-3/5">
 
         {/* SEARCH BOX */}
         <div className="text-slate-800 mt-8 flex border border-slate-300 rounded-full pl-4 md:w-2/3 w-full items-center py-3">
-          <input type="text" placeholder="search" value={search} onChange={(event)=>{setSearch(event.target.value)}} className="flex-1 outline-none" onKeyPress={handleKeyEnter}/>
+          <input type="text" placeholder="search" value={search} onChange={(event)=>{setSearch(event.target.value)}} ref={inputRef} className="flex-1 outline-none" onKeyPress={handleKeyEnter} />
 
           <div className="flex items-center px-4 border-l border-l-slate-300 cursor-pointer h-[100%]" onClick={searchBox}>
             <Search strokeWidth={2} size={16} />
