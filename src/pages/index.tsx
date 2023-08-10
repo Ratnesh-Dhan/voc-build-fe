@@ -84,6 +84,12 @@ const Home = () => {
     }
   }
 
+  const handleKeyEnter = (event) => {
+    if (event.key == 'Enter') {
+      searchBox();
+    }
+  };
+
   useEffect(()=>{
     videoRef?.current?.load();
     console.log(videoSource);
@@ -131,7 +137,7 @@ const Home = () => {
 
         {/* SEARCH BOX */}
         <div className="text-slate-800 mt-8 flex border border-slate-300 rounded-full pl-4 md:w-1/2 w-full items-center ">
-          <input type="text" placeholder="search" value={search} onChange={(event)=>{setSearch(event.target.value)}} className="flex-1 outline-none"/>
+          <input type="text" placeholder="search" value={search} onChange={(event)=>{setSearch(event.target.value)}} className="flex-1 outline-none" onKeyPress={handleKeyEnter}/>
 
           <div className="flex items-center px-4 border-l border-l-slate-300 cursor-pointer h-[100%]" onClick={searchBox}>
             <Search strokeWidth={2} size={16} />
