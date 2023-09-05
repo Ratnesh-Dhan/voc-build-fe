@@ -6,6 +6,8 @@ import axios from 'axios';
 import Meaning from '../components/Meaning';
 import {shuffle} from 'lodash';
 
+import { poppins } from '../components/font';
+
 let count = 0;
 let total = 0;
 
@@ -25,7 +27,7 @@ const Home = () => {
   }
   
   const searchBox = async() => {
-    console.log("inside search");
+
     setWord(search);
 
     
@@ -38,7 +40,6 @@ const Home = () => {
     try {
       //Searching word meanings
       const response = await axios.request(options);
-      console.log(response);
       setMeanings(response.data.definition);
 
       //Searching no of videos
@@ -57,10 +58,8 @@ const Home = () => {
         setMeanings([]); 
       }
       setWord("");
-      console.log("failed")
       
     }
-    console.log("exiting search")
   } 
 
   const previousVideo = () => {
@@ -68,7 +67,6 @@ const Home = () => {
     count--;
     setVideo();
     }
-    console.log(count);
   }
 
   const nextVideo = () => {
@@ -76,7 +74,6 @@ const Home = () => {
     count++;
     setVideo();
     }
-    console.log(count);
   }
 
   const handlePlay = () => {
@@ -116,8 +113,6 @@ const Home = () => {
   useEffect(()=>{
     videoRef?.current?.load();
     console.log(videoSource);
-    console.log({count});
-    console.log({total});
   },[videoSource]);
 
   useEffect(()=>{
@@ -132,7 +127,6 @@ const Home = () => {
       videoRef.current?.play();
     else
       videoRef?.current?.pause();
-    console.log({play});
   },[play]);
 
   useEffect(()=>{
@@ -142,15 +136,16 @@ const Home = () => {
   return (
     <>
     <Head>
-      <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+      {/* <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" /> */}
+      <link rel="icon" href="/k.jpg"></link>
       <title>{"VocBuild"}</title>
     </Head>
-
+    <div className={poppins.className} >
     <div className="overflow-hidden min-h-screen">
-      <div id="navbar" className="bg-black py-4 md:px-10 px-4 flex items-center w-screen fixed">
+      <div id="navbar" className="bg-white py-4 md:px-10 px-4 flex items-center w-screen fixed border border-b-200">
       <div className="flex items-center md:max-w-[1400px] md:w-full md:m-auto">
-          <Image src="suvid.svg" width={40} height={45} alt="logo"/>
-          <h1 className="text-white text-2xl font-bold md:ml-3 ml-1">{"VocBuild"}</h1>
+          <Image src="/newIkon.png" width={40} height={45} alt="logo"/>
+          <h1 className="text-black text-2xl font-bold md:ml-3 ml-1">{"voc-build"}</h1>
       </div>
       </div>
       <main className="flex flex-col md:flex-row md:px-[100px] py-[80px] md:m-auto md:max-w-[1400px] px-4 min-h-screen overflow-hidden">
@@ -169,9 +164,10 @@ const Home = () => {
 
         {/* VIDEO AREA */}
         {/* <div className="mt-8 w-[640px] h-[360px] border border-red-500 mb-6 flex bg-black"> */}
-        {word && <div className="mt-8 md:w-[640px] w-9/10 aspect-video border border-red-500 mb-6 flex items-center justify-center bg-black">
+        { word && <div className="mt-8 md:w-[640px] w-9/10 aspect-video border border-red-500 mb-6 flex items-center justify-center bg-black">
          {total===0 ? <p className="text-white font-semibold text-center">Sorry! No videos found.</p>:<video loop width="100%" autoPlay ref={videoRef}>
-          <source src={videoSource} />  
+          <source src={videoSource} type="video/mp4"/>  
+          {/* <source src="sample1.webm" type="video/webM" /> */}
         </video>}
         </div>}
 
@@ -198,6 +194,19 @@ const Home = () => {
       </div>
       </div>
       </main> 
+      
+      <footer id="footer" className="bg-slate-600 flex flex-col items-center justify-center px-4 py-4 md:px-10">
+        <div>
+        <h1 className=" text-white font-bold">About</h1>
+        </div>
+        <div>
+          <p className=" text-white">&copy; 2023 vocBuild. All Rights Reserved. Educational use only.</p>
+        </div>
+        <div>
+          <p className="text-white">This website is educational and nonprofitable. And aims to provide valuable learning resources.</p>
+        </div>
+      </footer>
+      </div>
     </div>
     </>
   )
