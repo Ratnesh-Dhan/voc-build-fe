@@ -52,7 +52,7 @@ const Home = () => {
 
     } catch (error) {
       if( error.message === 'Request failed with status code 404')
-        setMeanings(["no word found"]);
+        setMeanings(["-1"]);
       else {
         console.error(error);
         setMeanings([]); 
@@ -188,7 +188,7 @@ const Home = () => {
       {/* <div id="right-screen" className="text-slate-800 mr-[60px] bg-gray-200 px-2 flex-1 max-h-40 overflow-y-auto"> */}
       <div className="">
         <h3>  
-          { meanings.length === 0 ? <div className="text-center text-gray-400">Nothing searched yet.</div>: meanings.map((meaning, index)=>(<Meaning meaning={meaning} index={index} key={index} />)) }
+          { meanings.length === 0 ? <div className="text-center text-gray-400">Nothing searched yet.</div>: meanings[0] === "-1"? "no word found" : meanings.map((meaning, index)=>(<Meaning meaning={meaning} index={index} key={index} />)) }
         </h3>
       </div>
       </div>
