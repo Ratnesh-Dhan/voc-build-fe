@@ -183,7 +183,7 @@ const Home = () => {
 
       {/* MEANING SECTION */}
       <div id="right-screen" className="min-h-full md:mx-4 md:border-l md:border-l-gray-200 md:pl-4" >
-        <h1 className="text-4xl font-bold md:mt-8 my-4 md:text-start text-center">Dictionary</h1>
+        <h1 className="text-2xl md:text-4xl font-bold md:mt-8 my-4 md:text-start text-center">Dictionary</h1>
       <div  className="text-slate-800 self-center md:self-start bg-gray-200 max-h-[30vh] md:max-h-[65vh] overflow-auto px-2 py-1 md:my-5 border border-gray-300 rounded-md">
       {/* <div id="right-screen" className="text-slate-800 mr-[60px] bg-gray-200 px-2 flex-1 max-h-40 overflow-y-auto"> */}
       <div className="">
@@ -200,10 +200,10 @@ const Home = () => {
         <h1 className=" text-white font-bold">About</h1>
         </div>
         <div>
-          <p className=" text-white">&copy; 2023 vocBuild. All Rights Reserved. Educational use only.</p>
+          <p className=" text-white text-sm md:text-base text-center">&copy; 2023 vocBuild. All Rights Reserved. Educational use only.</p>
         </div>
         <div>
-          <p className="text-white">This website is educational and nonprofitable. And aims to provide valuable learning resources.</p>
+          <p className="text-white text-sm md:text-base text-center">This website is educational and nonprofitable. And aims to provide valuable learning resources.</p>
         </div>
       </footer>
       </div>
