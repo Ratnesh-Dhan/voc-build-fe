@@ -10,6 +10,7 @@ import { poppins } from '../components/font';
 
 let count = 0;
 let total = 0;
+let flag = false;
 
 const Home = () => {
   const videoRef = useRef(null);
@@ -29,9 +30,8 @@ const Home = () => {
   const searchBox = async() => {
 
     setWord(search);
+    flag = false;
 
-    
-    
     const options = {
       method: 'GET',
       url: `${process.env.NEXT_PUBLIC_MEANING_API}${search}`
@@ -45,10 +45,13 @@ const Home = () => {
       //Searching no of videos
       await axios.get(`${process.env.NEXT_PUBLIC_TOTAL_API}${search}`).then((response)=> {
         total = response.data;
+        flag = true;
         const vids = shuffle(Array.from(Array(total).keys()))
         setTotalVideo(vids);
+        if (total > 20)
+          total = 20;
       });
-
+    
 
     } catch (error) {
       if( error.message === 'Request failed with status code 404')
@@ -164,7 +167,7 @@ const Home = () => {
 
         {/* VIDEO AREA */}
         {/* <div className="mt-8 w-[640px] h-[360px] border border-red-500 mb-6 flex bg-black"> */}
-        { word && <div className="mt-8 md:w-[640px] w-9/10 aspect-video border border-red-500 mb-6 flex items-center justify-center bg-black">
+        { flag && <div className="mt-8 md:w-[640px] w-9/10 aspect-video border border-red-500 mb-6 flex items-center justify-center bg-black">
          {total===0 ? <p className="text-white font-semibold text-center">Sorry! No videos found.</p>:<video loop width="100%" autoPlay ref={videoRef}>
           <source src={videoSource} type="video/mp4"/>  
           {/* <source src="sample1.webm" type="video/webM" /> */}
