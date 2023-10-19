@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, {  useEffect, useRef, useState } from 'react'
 import Head from 'next/head';
 import Image from 'next/image';
 import { TriangleLeftFill, Search, TriangleRightFill } from 'akar-icons';
@@ -11,30 +11,41 @@ import { poppins } from '../components/font';
 let count = 0;
 let total = 0;
 let flag = false;
+let click_suggest_flag=false;
 
 const Home = () => {
+  const suggestionRef = useRef(null);
   const videoRef = useRef(null);
   const inputRef = useRef(null);
   const [search, setSearch] = useState("");
   const [meanings, setMeanings] = useState([]);
+  const [suggested, setSuggested] = useState([]);
   const [videoSource, setVideoSource] = useState("");
   const [word, setWord] = useState("");
   const [play, setPlay] = useState(true);
   const [totalVideo, setTotalVideo] = useState([]);
+
+  // Calling Suggestions remover function.
+  useOutsideAlerter(suggestionRef);
 
   const setVideo = () => {
     if(count < total && count >= 0)
       setVideoSource(`${process.env.NEXT_PUBLIC_VIDEO_API}${search}/${totalVideo[count]}`);
   }
   
-  const searchBox = async() => {
+  const searchBox = async(val) => {
 
-    setWord(search);
+    //setSuggested([]);
+    setWord(val);
     flag = false;
+
+    console.log({val});
+    console.log({word});
+    console.log({search});
 
     const options = {
       method: 'GET',
-      url: `${process.env.NEXT_PUBLIC_MEANING_API}${search}`
+      url: `${process.env.NEXT_PUBLIC_MEANING_API}${val}`
     };
 
     try {
@@ -43,11 +54,12 @@ const Home = () => {
       setMeanings(response.data.definition);
 
       //Searching no of videos
-      await axios.get(`${process.env.NEXT_PUBLIC_TOTAL_API}${search}`).then((response)=> {
+      await axios.get(`${process.env.NEXT_PUBLIC_TOTAL_API}${val}`).then((response)=> {
         total = response.data;
         flag = true;
         const vids = shuffle(Array.from(Array(total).keys()))
-        setTotalVideo(vids);
+        console.log(vids.slice(0,20));
+        setTotalVideo(vids.slice(0,20));
         if (total > 20)
           total = 20;
       });
@@ -64,6 +76,15 @@ const Home = () => {
       
     }
   } 
+
+  const suggest = async() => {
+    if(search !== "") {
+      await axios.get(`${process.env.NEXT_PUBLIC_WORD_SUGGESTIONS_API}${search}`).then((response)=>{
+        setSuggested(response.data.slice(0,10));
+
+      });
+    }
+  }
 
   const previousVideo = () => {
     if (count >0) {
@@ -87,10 +108,33 @@ const Home = () => {
 
   const handleKeyEnter = (event) => {
     if (event.key == 'Enter') {
-      searchBox();
+      searchBox(search);
     }
   };
 
+  // Function for removing suggestion box when clicked outsite suggestion box.
+  function useOutsideAlerter(ref) {
+    useEffect(() => {
+   
+      // Function for click event
+      function handleOutsideClick(event) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          click_suggest_flag=false;
+          setSuggested([]);
+        }
+      }
+   
+      // Adding click event listener
+      document.addEventListener("click", handleOutsideClick);
+      return () => document.removeEventListener("click", handleOutsideClick);
+    }, [ref]);
+  }
+
+  const suggestionClicked = (val) => {
+    setSearch(val);
+    searchBox(val);
+    click_suggest_flag=false;
+  }
   // // handle what happens on key press
   // const handleKeyPress = useCallback((event) => {
   //   console.log(`Key pressed: ${event.key}`);
@@ -119,6 +163,8 @@ const Home = () => {
   },[videoSource]);
 
   useEffect(()=>{
+    inputRef.current.focus();
+    setSuggested([]);
     count = 0;
     total = 0;
     setVideoSource("");
@@ -135,6 +181,18 @@ const Home = () => {
   useEffect(()=>{
     setVideo();
   },[totalVideo]);
+
+  useEffect(()=>{
+    click_suggest_flag=true;
+    if(search === "")
+      setSuggested([]);
+
+    const timer = setTimeout(() => {
+      suggest();
+    },500);
+
+    return () => clearTimeout(timer);
+  },[search]);
 
   return (
     <>
@@ -157,11 +215,23 @@ const Home = () => {
       <div id="left-screen" className="md:px-[60px] flex flex-col items-center h-full max-h-screen min-w-3/5 md:w-3/5">
 
         {/* SEARCH BOX */}
-        <div className="text-slate-800 mt-8 flex border border-slate-300 rounded-full pl-4 md:w-2/3 w-full items-center py-3">
-          <input type="text" placeholder="search" value={search} onChange={(event)=>{setSearch(event.target.value)}} ref={inputRef} className="flex-1 outline-none" onKeyPress={handleKeyEnter} />
+        <div className='relative w-full h-[50px] mt-8 flex flex-row justify-center'>
+        {/* absolute top-0  left-[50%] translate-x-[-50%] */}
+          <div className='absolute top-0 md:w-2/3 w-full z-10' ref={suggestionRef}>
+          <div className="flex-col text-slate-800 flex border border-slate-300 rounded-[28px] pl-4 md:w-full w-full py-3 bg-white">
+            <div className="flex items-center">
+              <input type="text" placeholder="search" value={search} onChange={(event)=>{setSearch(event.target.value)}} ref={inputRef} className="flex-1 outline-none w-full bg-transparent" onKeyPress={handleKeyEnter} />
+              <div className="flex items-center px-4 border-l border-l-slate-300 cursor-pointer h-[100%]" onClick={()=>{searchBox(search)}}>
+                <Search strokeWidth={2} size={16} />
+              </div>
+            </div>
+            <div className="pr-4">
+              {click_suggest_flag && suggested.length!==0 && <div className="border-t border-t-slate-300 w-full">
+                {suggested.map((wordSuggestion, index)=><div className='hover:bg-gray-100' onClick={()=>{suggestionClicked(wordSuggestion.substring(0,wordSuggestion.length - 1))}} key={index}> {wordSuggestion.substring(0,wordSuggestion.length - 1) }  </div>)}
+                </div>}
+            </div>
+          </div>
 
-          <div className="flex items-center px-4 border-l border-l-slate-300 cursor-pointer h-[100%]" onClick={searchBox}>
-            <Search strokeWidth={2} size={16} />
           </div>
         </div>
 
@@ -190,6 +260,7 @@ const Home = () => {
       <div  className="text-slate-800 self-center md:self-start bg-gray-200 max-h-[30vh] md:max-h-[65vh] overflow-auto px-2 py-1 md:my-5 border border-gray-300 rounded-md">
       {/* <div id="right-screen" className="text-slate-800 mr-[60px] bg-gray-200 px-2 flex-1 max-h-40 overflow-y-auto"> */}
       <div className="">
+        <h1 className="text-center">{word}</h1>
         <h3>  
           { meanings.length === 0 ? <div className="text-center text-gray-400">Nothing searched yet.</div>: meanings[0] === "-1"? "no word found" : meanings.map((meaning, index)=>(<Meaning meaning={meaning} index={index} key={index} />)) }
         </h3>
