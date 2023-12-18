@@ -5,6 +5,8 @@ import { TriangleLeftFill, Search, TriangleRightFill } from 'akar-icons';
 import axios from 'axios';
 import Meaning from '../components/Meaning';
 import {shuffle} from 'lodash';
+import { useRouter } from 'next/router';
+import { useSearchParams } from 'next/navigation';
 
 import { poppins } from '../components/font';
 
@@ -14,6 +16,10 @@ let flag = false;
 let click_suggest_flag=false;
 
 const Home = () => {
+
+  const searchParams = useSearchParams();
+
+  const router = useRouter();
   const suggestionRef = useRef(null);
   const videoRef = useRef(null);
   const inputRef = useRef(null);
@@ -28,9 +34,18 @@ const Home = () => {
   // Calling Suggestions remover function.
   useOutsideAlerter(suggestionRef);
 
+  //URL creation
+  const gotUrl = (term: string) => {
+    const params = new URLSearchParams("?q=ello");
+    if(term) 
+      params.set('query', term);
+    else
+      params.delete('query');
+  }
+
   const setVideo = () => {
     if(count < total && count >= 0)
-      setVideoSource(`${process.env.NEXT_PUBLIC_VIDEO_API}${search}/${totalVideo[count]}`);
+      setVideoSource(`${process.env.NEXT_PUBLIC_VIDEO_API}${word}/${totalVideo[count]}`);
   }
   
   const searchBox = async(val) => {
@@ -73,7 +88,7 @@ const Home = () => {
         setMeanings([]); 
       }
       setWord("");
-      
+      removeQuery();
     }
   } 
 
@@ -135,6 +150,24 @@ const Home = () => {
     searchBox(val);
     click_suggest_flag=false;
   }
+
+  //URL change function
+  const createUrl =(word: string)=> {
+    router.push({
+      ...router, 
+      query: {
+        ...router.query,
+        word: word
+      }},
+      undefined,
+      {shallow: true}
+    )
+  }
+
+  const removeQuery = () => {
+    router.push({...router,query:{}}, undefined, {shallow: true});
+  }
+
   // // handle what happens on key press
   // const handleKeyPress = useCallback((event) => {
   //   console.log(`Key pressed: ${event.key}`);
@@ -169,7 +202,16 @@ const Home = () => {
     total = 0;
     setVideoSource("");
     setPlay(true);
+
+    //test
+    console.log(word);
+    if(word)
+      createUrl(word);
   },[word]);
+
+  // useEffect(() => {
+  //   // The counter changed!
+  // }, [router.query.counter])
 
   useEffect(()=>{
     if(play)
@@ -194,6 +236,15 @@ const Home = () => {
     return () => clearTimeout(timer);
   },[search]);
 
+  useEffect(()=>{
+    const { query } = router;
+    console.log({query});
+    if(query.word){
+      const word = query.word;
+      searchBox(`${word}`);
+    }
+  },[router]);
+
   return (
     <>
     <Head>
@@ -206,7 +257,7 @@ const Home = () => {
       <div id="navbar" className="bg-white py-4 md:px-10 px-4 flex items-center w-screen fixed border border-b-200">
       <div className="flex items-center md:max-w-[1400px] md:w-full md:m-auto">
           <Image src="/newIkon.png" width={40} height={45} alt="logo"/>
-          <h1 className="text-black text-2xl font-bold md:ml-3 ml-1">{"voc-build"}</h1>
+          <h1 className="text-black text-2xl font-bold md:ml-3 ml-1 cursor-pointer"  onClick={()=>{window.location.reload()}}>{"voc-build"}</h1>
       </div>
       </div>
       <main className="flex flex-col md:flex-row md:px-[100px] py-[80px] md:m-auto md:max-w-[1400px] px-4 min-h-screen overflow-hidden">
@@ -260,7 +311,7 @@ const Home = () => {
       <div  className="text-slate-800 self-center md:self-start bg-gray-200 max-h-[30vh] md:max-h-[65vh] overflow-auto px-2 py-1 md:my-5 border border-gray-300 rounded-md">
       {/* <div id="right-screen" className="text-slate-800 mr-[60px] bg-gray-200 px-2 flex-1 max-h-40 overflow-y-auto"> */}
       <div className="">
-        <h1 className="text-center">{word}</h1>
+        <h1 className="text-center">{word.toUpperCase()}</h1>
         <h3>  
           { meanings.length === 0 ? <div className="text-center text-gray-400">Nothing searched yet.</div>: meanings[0] === "-1"? "no word found" : meanings.map((meaning, index)=>(<Meaning meaning={meaning} index={index} key={index} />)) }
         </h3>
