@@ -214,6 +214,8 @@ const Home = () => {
   // }, [router.query.counter])
 
   useEffect(()=>{
+    console.log({play});
+    
     if(play)
       videoRef.current?.play();
     else
@@ -243,7 +245,7 @@ const Home = () => {
       const word = query.word;
       searchBox(`${word}`);
     }
-  },[router]);
+  },[router.query]);
 
   return (
     <>
