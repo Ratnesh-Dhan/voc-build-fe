@@ -6,9 +6,8 @@ import axios from 'axios';
 import Meaning from '../components/Meaning';
 import {shuffle} from 'lodash';
 import { useRouter } from 'next/router';
-import { useSearchParams } from 'next/navigation';
-
 import { poppins } from '../components/font';
+import Moviesources from '@/components/Moviesources';
 
 let count = 0;
 let total = 0;
@@ -17,7 +16,7 @@ let click_suggest_flag=false;
 
 const Home = () => {
 
-  const searchParams = useSearchParams();
+  //const searchParams = useSearchParams();
 
   const router = useRouter();
   const suggestionRef = useRef(null);
@@ -30,25 +29,18 @@ const Home = () => {
   const [word, setWord] = useState("");
   const [play, setPlay] = useState(true);
   const [totalVideo, setTotalVideo] = useState([]);
+  const [initial, setInitial] = useState(false);
+  const [origin, setOrigin] = useState("");
 
   // Calling Suggestions remover function.
   useOutsideAlerter(suggestionRef);
-
-  //URL creation
-  const gotUrl = (term: string) => {
-    const params = new URLSearchParams("?q=ello");
-    if(term) 
-      params.set('query', term);
-    else
-      params.delete('query');
-  }
 
   const setVideo = () => {
     if(count < total && count >= 0)
       setVideoSource(`${process.env.NEXT_PUBLIC_VIDEO_API}${word}/${totalVideo[count]}`);
   }
   
-  const searchBox = async(val) => {
+  const searchBox = async(val, videoNumber = 0) => {
 
     //setSuggested([]);
     setWord(val);
@@ -73,8 +65,19 @@ const Home = () => {
         total = response.data;
         flag = true;
         const vids = shuffle(Array.from(Array(total).keys()))
-        console.log(vids.slice(0,20));
-        setTotalVideo(vids.slice(0,20));
+        const trimmedList = vids.slice(0,20)
+        console.log({vids});
+
+        //Setting video which is shared in URL.
+        if(videoNumber) {
+          trimmedList.pop(videoNumber);
+          trimmedList[0] = videoNumber;
+          setTotalVideo(trimmedList);
+          console.log("setting video which was shared in url");
+        }
+        else {
+          setTotalVideo(trimmedList);
+        }
         if (total > 20)
           total = 20;
       });
@@ -90,6 +93,7 @@ const Home = () => {
       setWord("");
       removeQuery();
     }
+    setInitial(true);
   } 
 
   const suggest = async() => {
@@ -152,12 +156,13 @@ const Home = () => {
   }
 
   //URL change function
-  const createUrl =(word: string)=> {
+  const createUrl =(word: string, videoNumber: number)=> {
     router.push({
-      ...router, 
+      pathname: router.pathname, 
       query: {
         ...router.query,
-        word: word
+        w: word,
+        v: videoNumber
       }},
       undefined,
       {shallow: true}
@@ -187,12 +192,14 @@ const Home = () => {
   // }, [handleKeyPress]);
 
   useEffect(()=>{
+    //removeQuery();
     inputRef.current.focus();
   },[])
 
   useEffect(()=>{
     videoRef?.current?.load();
-    console.log(videoSource);
+    if(videoSource)
+      createUrl(word, totalVideo[count])
   },[videoSource]);
 
   useEffect(()=>{
@@ -203,10 +210,6 @@ const Home = () => {
     setVideoSource("");
     setPlay(true);
 
-    //test
-    console.log(word);
-    if(word)
-      createUrl(word);
   },[word]);
 
   // useEffect(() => {
@@ -239,12 +242,20 @@ const Home = () => {
   },[search]);
 
   useEffect(()=>{
-    const { query } = router;
-    console.log({query});
-    if(query.word){
-      const word = query.word;
-      searchBox(`${word}`);
+    if(typeof window !== "undefined") {
+      setOrigin(window.location.origin);
     }
+    const { query } = router;
+    if(!initial){
+    if(query.w) {
+      searchBox(query.w, Number(query.v));
+    }
+  }
+  //   if(query.v){
+  //     console.log("this query function is hitting search box"+ typeof query.v);
+  //     const word = query.w;
+  //     searchBox(`${word}`, Number(query.v));
+  // }
   },[router.query]);
 
   return (
@@ -257,15 +268,17 @@ const Home = () => {
     <div className={poppins.className} >
     <div className="overflow-hidden min-h-screen">
       <div id="navbar" className="bg-white py-4 md:px-10 px-4 flex items-center w-screen fixed border border-b-200">
-      <div className="flex items-center md:max-w-[1400px] md:w-full md:m-auto">
+      <div className="flex items-center md:max-w-[1400px] md:w-full md:m-auto ">
+        <a className="flex items-center cursor-pointer" href={origin} >
           <Image src="/newIkon.png" width={40} height={45} alt="logo"/>
-          <h1 className="text-black text-2xl font-bold md:ml-3 ml-1 cursor-pointer"  onClick={()=>{window.location.reload()}}>{"voc-build"}</h1>
+          <h1 className="text-black text-2xl font-bold md:ml-3 ml-1 " >{"voc-build"}</h1>
+        </a>
       </div>
       </div>
       <main className="flex flex-col md:flex-row md:px-[100px] py-[80px] md:m-auto md:max-w-[1400px] px-4 min-h-screen overflow-hidden">
 
       {/* <div id="left-screen" className="px-[60px] h-full max-h-screen overflow-hidden flex flex-col flex-grow"> */}
-      <div id="left-screen" className="md:px-[60px] flex flex-col items-center h-full max-h-screen min-w-3/5 md:w-3/5">
+      <div id="left-screen" className="md:px-[60px] flex flex-col items-center h-full  min-w-3/5 md:w-3/5">{/* "max-h-screen"  if encounter any error*/}
 
         {/* SEARCH BOX */}
         <div className='relative w-full h-[50px] mt-8 flex flex-row justify-center'>
@@ -304,6 +317,10 @@ const Home = () => {
           <p>{videoSource.length === 0 ?count: count+1}/{total}</p>
           <TriangleRightFill className="cursor-pointer hover:bg-slate-200" strokeWidth={2} size={36} color="black" onClick={nextVideo}/>
           {/* <button className='text-white font-semibold text-sm bg-cyan-500 hover:bg-cyan-600 rounded-full px-3 py-1 ml-2' onClick={handlePouse}>pause</button> */}
+        </div>}
+        {/* MOVIE SOURCE BOX */}
+        {videoSource && <div className="border border-slate-300 rounded-md overflow-hidden my-3">
+          <Moviesources word={word} number={totalVideo[count]}/>
         </div>}
       </div>
 
