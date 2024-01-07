@@ -1,7 +1,7 @@
-import Meaning from '@/components/Meaning';
+import Meaning from '@/containers/Home/RightSection/Meaning';
 import React from 'react';
 
-const Rightscreen = ({meanings, word}) => {
+const RightSection = ({ meanings, word }) => {
   return (
     <div
       id="right-screen"
@@ -33,4 +33,4 @@ const Rightscreen = ({meanings, word}) => {
   );
 };
 
-export default Rightscreen;
+export default RightSection;
