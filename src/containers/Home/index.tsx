@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import Moviesources from '@/components/Moviesources';
 import { poppins } from '@/components/font';
 import Meaning from '@/components/Meaning';
+import Rightscreen from './Rightscreen';
 
 let count = 0;
 let total = 0;
@@ -28,7 +29,6 @@ const Home = () => {
   const [play, setPlay] = useState(true);
   const [totalVideo, setTotalVideo] = useState([]);
   const [initial, setInitial] = useState(false);
-  const [origin, setOrigin] = useState('');
 
   // Calling Suggestions remover function.
   useOutsideAlerter(suggestionRef);
@@ -175,7 +175,7 @@ const Home = () => {
   // // handle what happens on key press
   // const handleKeyPress = useCallback((event) => {
   //   console.log(`Key pressed: ${event.key}`);
-  //   if(event.key === '/') {
+  //   if(event.key === '/') 
   //     inputRef.current.focus();
   //   }
   // }, []);
@@ -236,9 +236,7 @@ const Home = () => {
   }, [search]);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setOrigin(window.location.origin);
-    }
+    
     const { query } = router;
     if (!initial) {
       if (query.w) {
@@ -256,19 +254,7 @@ const Home = () => {
     <React.Fragment>
       <div className={poppins.className}>
         <div className="overflow-hidden min-h-screen">
-          <div
-            id="navbar"
-            className="bg-white py-4 md:px-10 px-4 flex items-center w-screen fixed border border-b-200"
-          >
-            <div className="flex items-center md:max-w-[1400px] md:w-full md:m-auto ">
-              <a className="flex items-center cursor-pointer" href={origin}>
-                <Image src="/newIkon.png" width={40} height={45} alt="logo" />
-                <h1 className="text-black text-2xl font-bold md:ml-3 ml-1 ">
-                  {'voc-build'}
-                </h1>
-              </a>
-            </div>
-          </div>
+          
           <main className="flex flex-col md:flex-row md:px-[100px] py-[80px] md:m-auto md:max-w-[1400px] px-4 min-h-screen overflow-hidden">
             {/* <div id="left-screen" className="px-[60px] h-full max-h-screen overflow-hidden flex flex-col flex-grow"> */}
             <div
@@ -391,54 +377,10 @@ const Home = () => {
             </div>
 
             {/* MEANING SECTION */}
-            <div
-              id="right-screen"
-              className="min-h-full md:mx-4 md:border-l md:border-l-gray-200 md:pl-4"
-            >
-              <h1 className="text-2xl md:text-4xl font-bold md:mt-8 my-4 md:text-start text-center">
-                Dictionary
-              </h1>
-              <div className="text-slate-800 self-center md:self-start bg-gray-200 max-h-[30vh] md:max-h-[65vh] overflow-auto px-2 py-1 md:my-5 border border-gray-300 rounded-md">
-                {/* <div id="right-screen" className="text-slate-800 mr-[60px] bg-gray-200 px-2 flex-1 max-h-40 overflow-y-auto"> */}
-                <div className="">
-                  <h1 className="text-center">{word.toUpperCase()}</h1>
-                  <h3>
-                    {meanings.length === 0 ? (
-                      <div className="text-center text-gray-400">
-                        Nothing searched yet.
-                      </div>
-                    ) : meanings[0] === '-1' ? (
-                      'no word found'
-                    ) : (
-                      meanings.map((meaning, index) => (
-                        <Meaning meaning={meaning} index={index} key={index} />
-                      ))
-                    )}
-                  </h3>
-                </div>
-              </div>
-            </div>
+            <Rightscreen meanings={meanings} word={word}/>
           </main>
 
-          <footer
-            id="footer"
-            className="bg-slate-600 flex flex-col items-center justify-center px-4 py-4 md:px-10"
-          >
-            <div>
-              <h1 className=" text-white font-bold">About</h1>
-            </div>
-            <div>
-              <p className=" text-white text-sm md:text-base text-center">
-                &copy; 2023 vocBuild. All Rights Reserved. Educational use only.
-              </p>
-            </div>
-            <div>
-              <p className="text-white text-sm md:text-base text-center">
-                This website is educational and nonprofitable. And aims to
-                provide valuable learning resources.
-              </p>
-            </div>
-          </footer>
+          
         </div>
       </div>
     </React.Fragment>
