@@ -85,10 +85,16 @@ const Home = () => {
     const { query } = router;
     if (!initial) {
       if (query.w) {
-        searchBox(query.w, Number(query.v));
+        searchBox(query.w, Number(query.v)); 
       }
     }
   }, [router.query]);
+
+  //test
+  useEffect(()=>{
+    console.log("Home totalVideo "+ totalVideo);
+    console.log("Home total "+ total);
+  },[]);
 
   return (
     <React.Fragment>

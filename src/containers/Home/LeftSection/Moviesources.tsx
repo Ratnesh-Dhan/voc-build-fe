@@ -10,10 +10,11 @@ export interface IMetadata {
   seq: number;
 }
 
-const Moviesources = ({ word, number }) => {
-  const [metadata, setMetadata] = useState<{ data: IMetadata; error: boolean }>(
-    { data: null, error: false }
-  );
+const Moviesources = ({ word, number, videoSource }) => {
+  const [metadata, setMetadata] = useState<{ data: IMetadata; error: boolean }>({
+    data: null,
+    error: false,
+  });
 
   const movieInfo = async (word, number) => {
     await axios
@@ -28,21 +29,24 @@ const Moviesources = ({ word, number }) => {
 
   useEffect(() => {
     movieInfo(word, number);
-  });
-  return (
-    <div className="bg-blue-200 p-3">
-      <h1 className="font-semibold text-xl">
-        Movie : {metadata?.data?.movieName}
-      </h1>
-      <p>Text : {metadata?.data?.text}</p>
-      <a href={`https://imdb.com/title/${metadata?.data?.id}`} target="_blank">
-        <p className="text-sm mt-2">
-          IMDB :{' '}
-          <span className="text-blue-900 hover:underline">{`https://imdb.com/title/${metadata?.data?.id}`}</span>
-        </p>
-      </a>
-    </div>
-  );
+  }, [number]);
+
+  if (videoSource) {
+    return (
+      <div className="border border-slate-300 rounded-md overflow-hidden my-3">
+        <div className="bg-blue-200 p-3">
+          <h1 className="font-semibold text-xl">Movie : {metadata?.data?.movieName}</h1>
+          <p>Text : {metadata?.data?.text}</p>
+          <a href={`https://imdb.com/title/${metadata?.data?.id}`} target="_blank">
+            <p className="text-sm mt-2">
+              IMDB :{' '}
+              <span className="text-blue-900 hover:underline">{`https://imdb.com/title/${metadata?.data?.id}`}</span>
+            </p>
+          </a>
+        </div>
+      </div>
+    );
+  }
 };
 
 export default Moviesources;
