@@ -1,3 +1,4 @@
+import { InstagramFill, TwitterFill, YoutubeFill } from 'akar-icons';
 import React from 'react';
 
 const Footer = () => {
@@ -8,7 +9,7 @@ const Footer = () => {
         className="bg-slate-600 flex flex-col items-center justify-center px-4 py-4 md:px-10"
       >
         <div>
-          <h1 className=" text-white font-bold">About</h1>
+          <h1 className=" text-white font-bold flex justify-center">About</h1>
         </div>
         <div>
           <p className=" text-white text-sm md:text-base text-center">
@@ -17,9 +18,20 @@ const Footer = () => {
         </div>
         <div>
           <p className="text-white text-sm md:text-base text-center">
-            This website is educational and nonprofitable. And aims to provide
-            valuable learning resources.
+            This website is educational and nonprofitable. And aims to provide valuable learning
+            resources.
           </p>
+        </div>
+        <div className="flex flex-row justify-center mt-3">
+          <a href="https://www.instagram.com/vocbuild" target="blank" className="md:pr-8 pr-4">
+            <InstagramFill strokeWidth={2} size={25} color="white" />
+          </a>
+          <a href="https://www.youtube.com/@VocBuild" target="blank" className="md:pr-8 pr-4">
+            <YoutubeFill strokeWidth={2} size={25} color="white" />
+          </a>
+          <a href="https://twitter.com/VocBuild1" target="blank" className="">
+            <TwitterFill strokeWidth={2} size={25} color="white" />
+          </a>
         </div>
       </footer>
     </div>
