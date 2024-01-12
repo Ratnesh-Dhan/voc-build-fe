@@ -29,6 +29,7 @@ const Moviesources = ({ word, number, videoSource }) => {
 
   useEffect(() => {
     movieInfo(word, number);
+    console.log("work");
   }, [number]);
 
   if (videoSource) {
