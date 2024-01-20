@@ -7,6 +7,7 @@ const HomePage = () => {
     <React.Fragment>
       <Head>
         {/* <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" /> */}
+        <meta name="google-adsense-account" content="ca-pub-3728662145365007"/>
         <link rel="icon" href="/k.jpg"></link>
         <title>{'VocBuild'}</title>
       </Head>
