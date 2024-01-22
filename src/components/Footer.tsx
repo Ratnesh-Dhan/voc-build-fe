@@ -1,15 +1,18 @@
 import { InstagramFill, TwitterFill, YoutubeFill } from 'akar-icons';
 import React from 'react';
+import Link from 'next/link';
 
 const Footer = () => {
   return (
     <div>
       <footer
         id="footer"
-        className="bg-slate-600 flex flex-col items-center justify-center px-4 py-4 md:px-10"
+        className="bg-slate-600 flex flex-col items-center justify-center px-4 py-4 md:px-10 bottom-0"
       >
         <div>
-          <h1 className=" text-white font-bold flex justify-center">About</h1>
+          <h1 className=" text-white font-bold flex justify-center">
+            <Link href="/about">About</Link>
+          </h1>
         </div>
         <div>
           <p className=" text-white text-sm md:text-base text-center">

@@ -14,7 +14,7 @@ const Navbar = () => {
     <div className="z-20">
       <div
         id="navbar"
-        className="bg-white py-4 md:px-10 px-4 flex items-center w-screen fixed border border-b-200"
+        className="bg-white py-4 md:px-10 px-4 flex items-center w-screen fixed top-0 border border-b-200"
       >
         <div className="flex items-center md:max-w-[1400px] md:w-full md:m-auto ">
           <a className="flex items-center cursor-pointer" href={origin}>
