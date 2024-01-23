@@ -11,7 +11,7 @@ const HomePage = () => {
         <meta charSet="UTF-8" />
 
         <link rel="icon" href="/k.jpg"></link>
-        <title>{'VocBuild'}</title>
+        <title>VocBuild</title>
       </Head>
       <Home />
     </React.Fragment>

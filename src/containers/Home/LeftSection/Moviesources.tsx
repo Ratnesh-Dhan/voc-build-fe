@@ -29,14 +29,14 @@ const Moviesources = ({ word, number, videoSource }) => {
 
   useEffect(() => {
     movieInfo(word, number);
-    console.log("work");
+    console.log('work');
   }, [number]);
 
   if (videoSource) {
     return (
       <div className="border border-slate-300 rounded-md overflow-hidden my-3">
         <div className="bg-blue-200 p-3">
-          <h1 className="font-semibold text-xl">Movie : {metadata?.data?.movieName}</h1>
+          <h3 className="font-semibold text-xl">Movie : {metadata?.data?.movieName}</h3>
           <p>Text : {metadata?.data?.text}</p>
           <a href={`https://imdb.com/title/${metadata?.data?.id}`} target="_blank">
             <p className="text-sm mt-2">
