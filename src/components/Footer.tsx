@@ -12,6 +12,7 @@ const Footer = () => {
         <div>
           <h1 className=" text-white font-bold flex justify-center">
             <Link href="/about">About</Link>
+            <Link href="/Test">Test</Link>
           </h1>
         </div>
         <div>
