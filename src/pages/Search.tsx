@@ -4,16 +4,17 @@ import axios from 'axios';
 import { shuffle } from 'lodash';
 import { useRouter } from 'next/router';
 import { poppins } from '@/components/font';
-import LeftSection from './LeftSection';
-import RightSection from './RightSection';
+import LeftSection from '../containers/Home/LeftSection';
+import RightSection from '../containers/Home/RightSection';
 
 let total = 0;
 let flag = false;
 
-const Home = () => {
+const Search = () => {
   //const searchParams = useSearchParams();
 
   const router = useRouter();
+  
   const [search, setSearch] = useState('');
   const [meanings, setMeanings] = useState([]);
   const [word, setWord] = useState('');
@@ -110,4 +111,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Search;

@@ -9,10 +9,10 @@ const Footer = () => {
         id="footer"
         className="bg-slate-600 flex flex-col items-center justify-center px-4 py-4 md:px-10 bottom-0"
       >
+        {/* bg-slate-600 */}
         <div>
           <h1 className=" text-white font-bold flex justify-center">
-            <Link href="/about">About</Link>
-            <Link href="/Test">Test</Link>
+            <Link href="/About">About</Link>
           </h1>
         </div>
         <div>

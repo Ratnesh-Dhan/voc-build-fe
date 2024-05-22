@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import Home from '@/containers/Home';
+import Home from './Home';
 
 const HomePage = () => {
   return (

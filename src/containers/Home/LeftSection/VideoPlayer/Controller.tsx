@@ -35,13 +35,14 @@ const Controller = ({
   return (
     <div className="flex flex-row w-full justify-center items-center ">
       <button
-        className="text-white font-semibold text-sm bg-cyan-500 hover:bg-cyan-600 rounded-full px-3 py-1 mr-2"
+        className="text-white font-semibold text-sm bg-[#20C997] transition duration-200 ease-out hover:scale-125 rounded-full px-3 py-1 mr-2"
         onClick={handlePlay}
       >
+        {/* bg-cyan-500x  hover:bg-cyan-600 */}
         play/pause
       </button>
       <TriangleLeftFill
-        className="cursor-pointer hover:bg-slate-200"
+        className="cursor-pointer hover:bg-slate-200 hover:scale-125 transition duration-200 ease-out"
         strokeWidth={2}
         size={36}
         color="black"
@@ -51,7 +52,7 @@ const Controller = ({
         {videoSource.length === 0 ? currentVideo : currentVideo + 1}/{total}
       </p>
       <TriangleRightFill
-        className="cursor-pointer hover:bg-slate-200"
+        className="cursor-pointer hover:bg-slate-200 hover:scale-125 transition duration-200 ease-out"
         strokeWidth={2}
         size={36}
         color="black"

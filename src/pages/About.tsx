@@ -2,7 +2,7 @@ import { poppins } from '@/components/font';
 import Link from 'next/link';
 import React from 'react';
 
-const about = () => {
+const About = () => {
   return (
     <div className={poppins.className}>
       <div className="my-20 md:mx-20 mx-5 md:p-20 pt-5 text-center">
@@ -43,4 +43,4 @@ const about = () => {
   );
 };
 
-export default about;
+export default About;
