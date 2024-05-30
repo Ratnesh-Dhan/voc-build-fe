@@ -20,14 +20,16 @@ const Navbar = () => {
         <div className="flex items-center md:max-w-[1400px] md:w-full md:m-auto ">
           <a className="flex items-center cursor-pointer" href={origin}>
             <Image src="/newIkon.png" width={40} height={45} alt="logo" />
-            <h1 className="text-black text-2xl font-bold md:ml-3 ml-1 ">voc-build</h1>
+            <h1 className="text-black text-xl font-bold md:ml-3 ml-1 ">voc-build</h1>
           </a>
         </div>
         <div>
-          <Link href={'/Search'}>Search</Link>
-          <Link href={'/'} className="ml-5 md:ml-10">
-            Home
-          </Link>
+          <a href={'/Search'}>
+            <span className="text-sm md:text-base">Search</span>
+          </a>
+          <a href={'/'} className="ml-2 md:ml-10">
+            <span className="text-sm md:text-base">Home</span>
+          </a>
         </div>
       </div>
     </div>

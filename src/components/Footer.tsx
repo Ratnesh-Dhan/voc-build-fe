@@ -7,7 +7,7 @@ const Footer = () => {
     <div>
       <footer
         id="footer"
-        className="bg-slate-600 flex flex-col items-center justify-center px-4 py-4 md:px-10 bottom-0"
+        className="bg-[#0D5C63] flex flex-col items-center justify-center px-4 py-4 md:px-10 bottom-0"
       >
         {/* bg-slate-600 */}
         <div>

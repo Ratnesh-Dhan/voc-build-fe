@@ -47,21 +47,24 @@ const Moviesources = ({ word, number, videoSource }) => {
   if (videoSource) {
     return (
       <div className="border border-slate-300 rounded-md overflow-hidden my-3">
-        <div className="bg-blue-200 p-3">
+        <div className=" bg-blue-200 p-3">
+          {/* bg-blue-200 */}
           <h3 className="font-semibold text-xl">Movie: {metadata?.data?.movieName}</h3>
           {/* <p>Text: {metadata?.data?.text}</p> */}
-          <p>Text:{' '}
+          <p>
+            Text:{' '}
             {
-          // To highlight the searched word.
-            textAry.map((element, index) =>
-              word.toLowerCase() === element.toLowerCase() ? (
-                <span key={index} className="font-black underline">
-                  {`${element}`}
-                </span>
-              ) : (
-                <span key={index}>{`${element}`}</span>
+              // To highlight the searched word.
+              textAry.map((element, index) =>
+                word.toLowerCase() === element.toLowerCase() ? (
+                  <span key={index} className="font-black underline">
+                    {`${element}`}
+                  </span>
+                ) : (
+                  <span key={index}>{`${element}`}</span>
+                )
               )
-            )}
+            }
           </p>
 
           <a href={`https://imdb.com/title/${metadata?.data?.id}`} target="_blank">

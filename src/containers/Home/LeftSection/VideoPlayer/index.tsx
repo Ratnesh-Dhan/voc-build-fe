@@ -2,6 +2,7 @@ import If from '@/components/If';
 import React, { useEffect, useRef, useState } from 'react';
 import Video from './Video';
 import Controller from './Controller';
+import toast from 'react-hot-toast';
 
 const VideoPlayer = ({
   flag,
@@ -37,8 +38,25 @@ const VideoPlayer = ({
   }, [word]);
 
   useEffect(() => {
-    videoRef?.current?.load();
+    const videoElement = videoRef?.current;
+    console.log({ videoElement });
+    if (videoElement !== null) {
+      videoElement?.load();
+    }
+
     if (videoSource) createUrl(word, totalVideo[currentVideo]);
+
+    return () => {
+      // running cleanup function to handle component unmounting
+      if (videoElement) {
+        //videoRef.current.load();
+        // videoElement.abort();
+        //videoRef.current = null;
+        // videoElement.pause();
+        // videoElement.removeAttribute('src');
+        // videoElement.load();
+      }
+    };
   }, [videoSource]);
 
   return (
